@@ -8,11 +8,75 @@
    Author URI: http://www.smartango.com 
 */
 
+if(function_exists('add_filter')) {
+	add_filter('the_content', 'bbplanet_parse');
+}
 
-add_filter('the_content', 'bbplanet_parse');
+
+class bbTagParser
+{
+	var $tags = array();
+	var replacements = array();
+	function __construct($content)
+	{
+		if(preg_match('/\[\[bbplanet\:([^|]+)\|?(cat:(.*))?\]\]/',$content,$matches)) {
+			$whole = $matches[0];
+			$city = $matches[1];
+			$cat = null;
+			if(isset($matches[3])) {
+				$cat = $matches[3];
+			}
+			$this->tags[] = new bbTagInfos($whole,$city,$cats);
+		}
+		
+	}
+	
+	function calcReplacememt()
+	{
+		foreach($this->tags as $taginfo) {
+			$stru = new bbPlanetStru();
+			foreach($taginfo->cities as $city) {
+				$calcString = $stru->getAll($city,$taginfo->cat[0]);
+				$this->replacements[$taginfo->wholeTag] = $calcString;
+			}
+	}
+}
+
+class bbTagInfos
+{
+	var $wholeTag = '';
+	var $cities = array();
+	var $cats = array();
+	function __construct($whole,$cities,$cats='')
+	{
+		$this->wholeTag = $whole;
+		$this->cities  = $this->parseCities($cities);
+		$this->cats  = $this->parseCats($cats);
+	}
+
+	function parseCities($cities)
+	{
+		$this->cities[] = $cities;
+	}
+	function parseCats($cats)
+	{
+		$this->cats[] = $cats;
+	}
+}
+
+function bbplanet_tagParser($content)
+{
+
+}
 
 function bbplanet_parse($content='')
 {
+	$bbparser = new bbTagParser($content);
+	$bbparser->calcReplacement();
+	str_replace(array_keys($bbparser->replacement),
+		    array_values($bbparser->replacement),
+		    $content
+		);
 	if(preg_match('/\[\[bbplanet\:([^|]+)\|?(cat:(.*))?\]\]/',$content,$matches)) {
 		$whole = $matches[0];
 		$city = $matches[1];
