@@ -40,11 +40,10 @@ class bbPlanetStorer
 		if(function_exists('get_option')) {
 			$options = get_option('bbplanetwp_options');
 			if($options) {
-				$version = $options['version'];
-				$duration = $options['duration'];
-			} else {
-				$version = 0;
-				$duration = 24*3600;
+				$version = $options['tmpl_version'];
+				if($options['duration']) {
+					$duration = $options['duration'];
+				}
 			}
 		}
 		$tagname = $wpdb->escape($tag);

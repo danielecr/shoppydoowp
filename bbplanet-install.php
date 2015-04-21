@@ -22,7 +22,8 @@ function bbplanet_install()
 	require_once(ABSPATH. 'wp-admin/includes/upgrade.php');
 	dbDelta( $sql );
 	add_option('bbplanet_db_version',"1.0");
-	@chmod(dirname(__FILE__).'/cache',755);
+	//@chmod(dirname(__FILE__).'/cache',755);
+	bbplanet_first_option_setup();
 }
 
 function bbplanet_get_tablename()

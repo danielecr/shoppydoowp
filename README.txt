@@ -4,7 +4,7 @@ Donate link: http://www.smartango.com/
 Tags: appartment, receiptive, feed, link
 Stable tag: 1.0
 Requires at least: 3.1
-Tested up to: 3.8
+Tested up to: 4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
