@@ -284,6 +284,9 @@ class bbPlanetStru
 		if(function_exists('get_option') ) {
 			$options = get_option('bbplanetwp_options');
 			$this->ida = $options['ida'];
+			if($options['lang']) {
+				$this->lang = $options['lang'];
+			}
 		}
 	}
 	

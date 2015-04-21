@@ -58,6 +58,34 @@ function bbplanet_options() {
 	echo '<div class="wrap">';
 	$options = get_option('bbplanetwp_options');
 	?>
+<div>
+<h3>Come va usato</h3>
+<p>
+	Inserire nel testo degli articoli un tag come questo:
+</p>
+	<strong>[[bbplanet:Lecce|cat:Albergo]]</strong>
+<p>
+	Rispettare maiuscole e minuscole, si possono indicare più citta:
+</p>
+	<strong>[[bbplanet:Taviano,Gallipoli|cat:BB]]</strong>
+<p>
+	o più categorie:
+</p>
+	<strong>[[bbplanet:Gallipoli|cat:Albergo,BB]]</strong>
+<p>
+	o entrambe:
+</p>
+	<strong>[[bbplanet:Gallipoli,Taviano|cat:Albergo,BB]]</strong>
+<p>
+	Non indicando la categoria verranno inserite tutti i tipi di strutture
+</p>
+	<strong>[[bbplanet:Gallipoli,Taviano]]</strong>
+<p>
+	È anche possibile indicare una intera regione o provincia, ma il numero di risultati sarà alto
+</p>
+	
+</div>
+<h3>Setup</h3>
 <form action="" method="post">
 <div>
 	IDA:	<input type="text" name="ida" value="<?=$options['ida']?>" /><br />
