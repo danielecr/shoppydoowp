@@ -15,8 +15,12 @@ if(function_exists('add_filter')) {
 
 class bbTagParser
 {
+	/**
+	 * array(bbTagInfos)
+	 */
 	var $tags = array();
-	var replacements = array();
+	var $replacements = array();
+	var $error = false;
 	function __construct($content)
 	{
 		if(preg_match('/\[\[bbplanet\:([^|]+)\|?(cat:(.*))?\]\]/',$content,$matches)) {
@@ -26,41 +30,142 @@ class bbTagParser
 			if(isset($matches[3])) {
 				$cat = $matches[3];
 			}
-			$this->tags[] = new bbTagInfos($whole,$city,$cats);
+			$ti = new bbTagInfos($whole,$city,$cat);
+			$this->tags[] = $ti;
+			if($ti->hasError()) {
+				$this->error = true;
+				$this->errors[] = $ti->getError();
+			}
 		}
-		
 	}
 	
-	function calcReplacememt()
+	function hasError()
 	{
+		return $this->error;
+	}
+
+	function getError()
+	{
+		return print_r($this->errors,TRUE);
+	}
+
+	function calcReplacement()
+	{
+		$stru = new bbPlanetStru();
+		//print_r($this->tags);
 		foreach($this->tags as $taginfo) {
-			$stru = new bbPlanetStru();
-			foreach($taginfo->cities as $city) {
-				$calcString = $stru->getAll($city,$taginfo->cat[0]);
-				$this->replacements[$taginfo->wholeTag] = $calcString;
-			}
+			$calcString = $stru->getAllMultiple($taginfo);
+			$this->replacements[$taginfo->wholeTag] = $calcString;
+			continue;
+		}
 	}
 }
 
-class bbTagInfos
+class bbTagInfos implements Iterator
 {
 	var $wholeTag = '';
 	var $cities = array();
 	var $cats = array();
+	var $catGood = array();
+	var $error = false;
+	var $errors = array();
+
 	function __construct($whole,$cities,$cats='')
 	{
 		$this->wholeTag = $whole;
-		$this->cities  = $this->parseCities($cities);
-		$this->cats  = $this->parseCats($cats);
+		$this->parseCities($cities);
+		$this->parseCats($cats);
+		$this->calcIter();
 	}
 
 	function parseCities($cities)
 	{
-		$this->cities[] = $cities;
+		$this->cities = explode(',',$cities);
 	}
+
 	function parseCats($cats)
 	{
-		$this->cats[] = $cats;
+		$this->cats = explode(',',$cats);
+		foreach($this->cats as $i => $cat) {
+			if(!in_array($cat, bbPlanetStru::$STRUCT_TYPES)) {
+				$this->error = true;
+				$this->errors[] = $cat. ' categoria non riconosciuta';
+				$this->catGood[$i] = false;
+			} else {
+				$this->catGood[$i] = true;
+			}
+		}
+	}
+	function hasError()
+	{
+		return $this->error;
+	}
+	function getError()
+	{
+		return $this->errors;
+	}
+
+	private function getCouple($city,$cat)
+	{
+		$couple= new StdClass();
+		$couple->city = $city;
+		$couple->cat = $cat;
+		return $couple;
+	}
+
+	function calcIter()
+	{
+		$this->couples = array();
+		foreach($this->cities as $city) {
+			if(count($this->cats) == 0) {
+				$this->couples[] = $this->getCouple($city,null);
+				continue;
+			}
+			$added = false;
+			foreach($this->cats as $i => $cat) {
+				if($this->catGood[$i]) {
+					$this->couples[] = $this->getCouple($city,$cat);
+					$added = true;
+				}
+			}
+			if(!$added) {
+				$this->couples[] = $this->getCouple($city,null);
+			}
+		}
+	}
+	private $couples = array();
+	private $cursor = 0;
+
+	function current()
+	{
+		return $this->couples[$this->cursor];
+	}
+
+	function key()
+	{
+		return $this->cursor;
+	}
+
+	function next()
+	{
+		++$this->cursor;
+	}
+
+	function rewind()
+	{
+		$this->cursor = 0;
+	}
+
+	function valid()
+	{
+		if($this->cursor==0) return true;
+		//return true;
+		if($this->cursor < count($this->couples) &&
+		   $this->cursor > 0 ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 
@@ -73,22 +178,10 @@ function bbplanet_parse($content='')
 {
 	$bbparser = new bbTagParser($content);
 	$bbparser->calcReplacement();
-	str_replace(array_keys($bbparser->replacement),
-		    array_values($bbparser->replacement),
+	return str_replace(array_keys($bbparser->replacements),
+		    array_values($bbparser->replacements),
 		    $content
 		);
-	if(preg_match('/\[\[bbplanet\:([^|]+)\|?(cat:(.*))?\]\]/',$content,$matches)) {
-		$whole = $matches[0];
-		$city = $matches[1];
-		$cat = null;
-		if(isset($matches[3])) {
-			$cat = $matches[3];
-		}
-		//return preg_replace("/".preg_quote($whole)."/",$city,$content);
-		$stru = new bbPlanetStru();
-		$calcString = $stru->getAll($city,$cat);
-		return preg_replace("/".preg_quote($whole)."/",$calcString,$content);
-	}
 }
 
 function bbplanet_get_structures($localita, $types = NULL)
@@ -97,7 +190,7 @@ function bbplanet_get_structures($localita, $types = NULL)
 
 class bbParsedStru
 {
-	var $elements = array(
+	static public $elements = array(
 		'IDStruttura',
 		'tipologia',
 		'tipologiaestesa',
@@ -149,7 +242,7 @@ class bbParsedStru
 	function parseXml($xml)
 	{
 		$ff = count($this->structures);
-		foreach($this->elements as $element) {
+		foreach(bbParsedStru::$elements as $element) {
 			$delta=0;
 			foreach($xml->{$element} as $k => $el) {
 				if(count($this->structures) == $ff + $delta ) {
@@ -164,6 +257,13 @@ class bbParsedStru
 
 class bbPlanetStru
 {
+	public static $STRUCT_TYPES = array(
+		'BB',
+		'Albergo',
+		'Appartamento',
+		'Agriturismo',
+		'Residence',
+		);
 	var $stypes = array('bb' => 'BB',
 			    'ho' => 'Albergo',
 			    'ap' => 'Appartamento',
@@ -175,10 +275,16 @@ class bbPlanetStru
 	
 	var $ida;
 	var $lang = 'IT';
+
+	var $lastcount = 0;
 	
 	public function __construct($ida='10463')
 	{
 		$this->ida = $ida;
+		if(function_exists('get_option') ) {
+			$options = get_option('bbplanetwp_options');
+			$this->ida = $options['ida'];
+		}
 	}
 	
 	private function getTheXml($params)
@@ -214,7 +320,6 @@ class bbPlanetStru
 				$p++;
 			}while($p*10<$nstrutture);
 		}
-		//print_r($parsed);
 		return $parsed;
 	}
 		
@@ -238,21 +343,51 @@ class bbPlanetStru
 	{
 		$parsed = $this->getStructs($city, $cat);
 		$formatter = new bbPlanetFormatter();
+		$this->lastcount += count($parsed->structures);
 		return $formatter->formatAll($parsed->structures);
+	}
+
+	function getAllMultiple($taginfo)
+	{
+		$storer = new bbPlanetStorer();
+		$replacement = $storer->getTagReplace($taginfo->wholeTag);
+		if($replacement) return $replacement;
+		$formatter = new bbPlanetFormatter();
+		$this->lastcount = 0;
+		$calcString = '';
+		foreach($taginfo as $i => $tp) {
+			$parsed = $this->getStructs($tp->city, $tp->cat);
+			$this->lastcount += count($parsed->structures);
+			$calcString .= $formatter->formatAll($parsed->structures);
+		}
+		$this->calcString = $calcString;
+		$storer->storeTagReplacement($taginfo->wholeTag, $calcString);
+		return $calcString;
 	}
 }
 
 class bbPlanetFormatter
 {
+	
 	var $begin = '<ul>';
 	var $end = '</ul>';
-	var $element = "<li>A [[citta]] esiste un hotel
-<strong>[[nomestruttura]]<br />
+	var $element = "<li>A [[citta]] hotel
+<strong>[[nomestruttura]]<strong><br />
 <p>[[descrizione]]</p>
-<p>Vacci tu a <a href=\"[[linkstruttura]]\">[[nomestruttura]]</a></p></li>";
-	function __costruct()
+<p>Vai a <a href=\"[[linkstruttura]]\">[[nomestruttura]]</a></p></li>";
+	/*
+	var $begin;
+	var $end;
+	var $element;
+	*/
+	function __construct()
 	{
-		
+		if(function_exists('get_option') ) {
+			$options = get_option('bbplanetwp_options');
+			$this->begin = stripslashes($options['head']);
+			$this->end = stripslashes($options['tail']);
+			$this->element = stripslashes($options['snippet']);
+		}
 	}
 
 	function formatStruct($struct)
@@ -261,6 +396,7 @@ class bbPlanetFormatter
 		foreach($struct as $k => $v) {
 			$orig = preg_replace('/\[\['.preg_quote($k).'\]\]/',$v,$orig);
 		}
+
 		return $orig;
 	}
 
@@ -270,6 +406,12 @@ class bbPlanetFormatter
 		foreach($structures as $stru) {
 			$content .= $this->formatStruct($stru);
 		}
-		return $this->begin . $content . $this->end;
+		return $this->begin . $content . $this->end . "1n\n";
 	}
 }
+
+
+require_once 'bbplanet-admin.php';
+require_once 'bbplanet-install.php';
+require_once 'bbplanet-storer.php';
+
