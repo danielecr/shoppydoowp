@@ -12,6 +12,10 @@ if(function_exists('add_filter')) {
 	add_filter('the_content', 'bbplanet_parse');
 }
 
+add_action( 'edit_form_after_title', 'bbplanet_edit_form_after_title' );
+function bbplanet_edit_form_after_title() {
+    echo '<strong>BBPlanetWP tag example</strong>: [[bbplanet:Gallipoli|cat:Appartamento]]';
+}
 
 class bbTagParser
 {
