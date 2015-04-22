@@ -41,17 +41,31 @@ function bbplanet_options() {
 		$storer->expireAllVersion($options['tmpl_version']);
 	}
 	if ( isset( $_POST['Submit'] ) ) {
+		$curversion = 0;
+		if($options['tmpl_version'] >=1) {
+			$curversion = $options['tmpl_version'];
+		}
 		$options['ida'] = $_POST['ida'];
 		$options['head'] = stripslashes($_POST['head']);
 		$options['tail'] = stripslashes($_POST['tail']);
-		$options['snippet'] = stripslashes($_POST['snippet']);
 		$options['duration'] = stripslashes($_POST['duration']);
-		if($options['tmpl_version'] >=1) {
+
+		$advance_ver = false;
+		$newsnipp = stripslashes($_POST['snippet']);
+		if($newsnipp != $options['snippet']) {
+			$options['snippet'] = $newsnipp;
+			$advance_ver = true;
+		}
+		if(isset($_POST['lang'])) {
+			$options['lang'] = stripslashes($_POST['lang']);
+			$advance_ver = true;
+		}
+		if($advance_ver) {
 			$storer = new bbPlanetStorer();
-			$storer->expireAllVersion($options['tmpl_version']);
-			$options['tmpl_version'] +=1;
+			$storer->expireAllVersion($curversion);
+			$options['tmpl_version'] = $curversion+1;
 		} else {
-			$options['tmpl_version'] = 1;
+			$options['tmpl_version'] = $curversion;
 		}
 		update_option('bbplanetwp_options',$options);
 	}
@@ -62,24 +76,29 @@ function bbplanet_options() {
 <h3>Come va usato</h3>
 <p>
 	Inserire nel testo degli articoli un tag come questo:
-</p>
+	<br />
 	<strong>[[bbplanet:Lecce|cat:Albergo]]</strong>
+</p>
 <p>
 	Rispettare maiuscole e minuscole, si possono indicare più citta:
-</p>
+<br/>
 	<strong>[[bbplanet:Taviano,Gallipoli|cat:BB]]</strong>
+</p>
 <p>
 	o più categorie:
-</p>
+<br />
 	<strong>[[bbplanet:Gallipoli|cat:Albergo,BB]]</strong>
+</p>
 <p>
 	o entrambe:
-</p>
+<br />
 	<strong>[[bbplanet:Gallipoli,Taviano|cat:Albergo,BB]]</strong>
+</p>
 <p>
 	Non indicando la categoria verranno inserite tutti i tipi di strutture
-</p>
+<br />
 	<strong>[[bbplanet:Gallipoli,Taviano]]</strong>
+</p>
 <p>
 	È anche possibile indicare una intera regione o provincia, ma il numero di risultati sarà alto
 </p>
@@ -89,14 +108,33 @@ function bbplanet_options() {
 <form action="" method="post">
 <div>
 	IDA:	<input type="text" name="ida" value="<?=$options['ida']?>" /><br />
-<p>Identificativo associate program</p>
+Identificativo associate program
+</div>
+<div>
+	Lingua:
+<select name="lang">
+<?php
+	$avail_lang = array('IT', 'EN', 'ES', 'DE', 'PT', 'SE', 'RU');
+	foreach($avail_lang as $l) {
+	if($options['lang'] == $l) $s = ' selected="selected"';
+	else $s = '';
+	?>
+<option value="<?=$l?>"<?=$s?>><?=$l?></option>
+<?php
+}
+	?>
+</select>
+	(* cambiare lingua invalida la cache)
 </div>
 <div>
 	HEADER:	<input type="text" name="head" value="<?=$options['head']?>" /><br />
 </div>
 <div>
 	BODY:	<textarea  cols="50" rows="10" name="snippet"><?=$options['snippet']?></textarea>
-<p>Aggiungi tutti i campi che verranno sostituiti per ogni struttura.</p>
+
+<p>Tag disponibili:
+<?php	echo '[[<strong>'. implode('</strong>]], [[<strong>',bbParsedStru::$elements) . '</strong>]]'; ?>
+</p>
 	<p><strong>Attenzione:</strong> modificando il template o cambiando i parametri si invaliderà la cache attuale delle strutture</p>
 </div>
 <div>
@@ -133,10 +171,6 @@ function bbplanet_options() {
 	</form>
 <?php
 	
-	echo '<p>Tag disponibili:Here is where the form would go if I actually had options.</p>';
-	echo "<p>";
-	echo '[['. implode(']], [[',bbParsedStru::$elements) . ']]';
-	echo "</p>";
 	echo '</div>';
 }
 
