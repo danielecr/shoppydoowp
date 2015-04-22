@@ -4,7 +4,7 @@
    Plugin URI: http://www.smartango.com/
    Description: Inject BBPlanet hotels et all into wp articles
    Author: Daniele Cruciani
-   Version: 1.0
+   Version: 1.1
    Author URI: http://www.smartango.com 
 */
 

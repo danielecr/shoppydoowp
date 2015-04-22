@@ -99,6 +99,8 @@ function bbplanet_options() {
 <br />
 	<strong>[[bbplanet:Gallipoli,Taviano]]</strong>
 </p>
+	<p>Elenco categorie strutture:
+<strong><?php echo implode('</strong>, <strong>',bbPlanetStru::$STRUCT_TYPES); ?></strong>
 <p>
 	È anche possibile indicare una intera regione o provincia, ma il numero di risultati sarà alto
 </p>

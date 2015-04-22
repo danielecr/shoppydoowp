@@ -2,7 +2,7 @@
 Contributors: danielecr
 Donate link: http://www.smartango.com/
 Tags: appartment, receiptive, feed, link
-Stable tag: 1.0
+Stable tag: 1.1
 Requires at least: 3.1
 Tested up to: 4.2
 License: GPLv2 or later
@@ -15,7 +15,13 @@ Display a list of available (in bbplanet) receiptive structure
 
 Insert the right tag in the article and with this plugin
 activated it will be listed all structure available from
-bbplanet.net feed 
+bbplanet.net feed
+
+Tag format is: [[bbplanet:Gallipoli|cat:Albergo]]
+Gallipoli is the city (more city could be specified separing
+with comma ','), categories are one or more of: 'BB','Albergo',
+'Appartamento','Agriturismo','Residence'.
+
 
 == Installation ==
 
@@ -34,6 +40,13 @@ the table.
 
 
 == Changelog ==
+
+= 1.1 =
+* add language support
+* reorder description
+
+= 1.0 =
+* a working version
 
 = 0.1 =
 * initial release (only readme)
