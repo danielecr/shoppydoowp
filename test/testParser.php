@@ -10,7 +10,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano|cat:C]]";
+		$thetag = "[[bbplanet:Taviano e|cat:C]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$ti = $bbparser->tags[0];

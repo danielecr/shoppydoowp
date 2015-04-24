@@ -7,7 +7,7 @@
 
 class WPDB
 {
-	var $prefix = '';
+	public $prefix = '';
 	function __construct()
 	{
 		$dbconf = parse_ini_file('dbconf.ini');
@@ -41,6 +41,7 @@ class WPDB
 }
 
 
-global $wpdb;
 
 $wpdb = new WPDB();
+
+global $wpdb;

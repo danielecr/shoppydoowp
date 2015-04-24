@@ -4,15 +4,15 @@
    Plugin URI: http://www.smartango.com/
    Description: Inject BBPlanet hotels et all into wp articles
    Author: Daniele Cruciani
-   Version: 1.1
+   Version: 1.2
    Author URI: http://www.smartango.com 
 */
 
 if(function_exists('add_filter')) {
 	add_filter('the_content', 'bbplanet_parse');
+	add_action('edit_form_after_title', 'bbplanet_edit_form_after_title' );
 }
 
-add_action( 'edit_form_after_title', 'bbplanet_edit_form_after_title' );
 function bbplanet_edit_form_after_title() {
     echo '<strong>BBPlanetWP tag example</strong>: [[bbplanet:Gallipoli|cat:Appartamento]]';
 }
@@ -288,7 +288,7 @@ class bbPlanetStru
 		if(function_exists('get_option') ) {
 			$options = get_option('bbplanetwp_options');
 			$this->ida = $options['ida'];
-			if($options['lang']) {
+			if(isset($options['lang'])) {
 				$this->lang = $options['lang'];
 			}
 		}
@@ -297,8 +297,20 @@ class bbPlanetStru
 	private function getTheXml($params)
 	{
 		$url = $this->buildStUrl($params);
-		$xml = simplexml_load_file($url);
+		$xml = $this->loadXmlFromNet($url);
 		return $xml;
+	}
+
+	private function loadXmlFromNet($url)
+	{
+		if(function_exists('wp_remote_get')) {
+			$response = wp_remote_get($url);
+			if(is_array($response)) {
+				return simplexml_load_string($response['body']);
+			}
+		} else {
+			return simplexml_load_file($url);
+		}
 	}
 
 	private function getNStrutture($xml)

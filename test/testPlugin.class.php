@@ -49,6 +49,26 @@ class testPlugin extends PHPUnit_Framework_TestCase
 		$this->assertTrue($bbparser->tags[0]->cats[1] == 'BB');
 	}
 
+	function testTagParserWithSpace()
+	{
+		$head = "my litte ";
+		$tail = " et all";
+		$thetag = "[[bbplanet:Torre San Giovanni|cat:Albergo]]";
+		$text = $head.$thetag.$tail;
+		$bbparser = new bbTagParser($text);
+		$this->assertTrue(count($bbparser->tags) == 1);
+		$this->assertTrue(count($bbparser->tags[0]->cities) == 1);
+		$this->assertTrue($bbparser->tags[0]->cities[0] == 'Torre San Giovanni');
+		$this->assertTrue($bbparser->tags[0]->cats[0] == 'Albergo');
+		$this->assertTrue($bbparser->hasError());
+		$this->assertTrue($bbparser->getError()!='');
+		print $bbparser->getError();
+		$bbparser->calcReplacement();
+		print_r($bbparser->replacements);
+
+	}
+
+
 	function testTagParserWrongCat()
 	{
 		$head = "my litte ";
