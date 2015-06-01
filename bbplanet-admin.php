@@ -104,6 +104,11 @@ function bbplanet_options() {
 <p>
 	È anche possibile indicare una intera regione o provincia, ma il numero di risultati sarà alto
 </p>
+<p>È possibile restringere alla sola tipologia, ma questo indicando una <em>sola</em> categoria:<br/>
+  <strong>[[bbplanet:Gallipoli,Taviano|cat:BB|strict]]</strong>
+  <br />
+  in questo modo viene applicato un ulteriore filtro. <strong>N.B.</strong>: funziona solo indicando una sola categoria
+  </p>
 	
 </div>
 <h3>Setup</h3>

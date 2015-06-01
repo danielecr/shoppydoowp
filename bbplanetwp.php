@@ -4,7 +4,7 @@
    Plugin URI: http://www.smartango.com/
    Description: Inject BBPlanet hotels et all into wp articles
    Author: Daniele Cruciani
-   Version: 1.2
+   Version: 1.3
    Author URI: http://www.smartango.com 
 */
 
@@ -36,9 +36,9 @@ class bbTagParser
 				$cat = $matches[3];
 			}
 			if(isset($matches[5]) && $matches[5] == 'strict') {
-				$strict_mode = true;
+				$strict_mode = 1;
 			} else {
-				$strict_mode = false;
+				$strict_mode = 0;
 			}
 			$ti = new bbTagInfos($whole,$city,$cat,$strict_mode);
 			$this->tags[] = $ti;
@@ -79,15 +79,15 @@ class bbTagInfos implements Iterator
 	var $catGood = array();
 	var $error = false;
 	var $errors = array();
-	public $strict_mode = false;
+	public $strict_mode = 0;
 
-	function __construct($whole,$cities,$cats='',$strictMode = false)
+	function __construct($whole,$cities,$cats='',$strictMode = 0)
 	{
 		$this->wholeTag = $whole;
+		$this->strict_mode = $strictMode;
 		$this->parseCities($cities);
 		$this->parseCats($cats);
 		$this->calcIter();
-		$this->strict_mode = $strictMode;
 	}
 
 	function parseCities($cities)
@@ -234,7 +234,7 @@ class bbParsedStru
 			$this->parseXml($xml,$filter);
 		}
 	}
-	function add($xml = NULL)
+	function add($xml = NULL,$filter=NULL)
 	{
 		if($xml) {
 			$this->parseXml($xml,$filter);
@@ -255,13 +255,33 @@ class bbParsedStru
 	function parseXml($xml,$filter = NULL)
 	{
 		$ff = count($this->structures);
+		$exclusions = array();
+		$delta=0;
+		foreach($xml->tipologia as $k => $el) {
+			if($filter != NULL && $filter != (string) $el) {
+				$exclusions[] = $delta;
+			} else {
+				//print (string) $el;
+				//print " NOT $filter\n";
+				//$exclusions[] = $k;
+			}
+			$delta++;
+		}
+		//print "Exclusions\n";
+		//print_r($exclusions);
 		foreach(bbParsedStru::$elements as $element) {
 			$delta=0;
+			$index = $ff;
 			foreach($xml->{$element} as $k => $el) {
-				if(count($this->structures) == $ff + $delta ) {
-					$this->structures[$ff+$delta] = new StdClass;
+				if(in_array($delta,$exclusions)) {
+					$delta++;
+					continue;
 				}
-				$this->structures[$ff+$delta]->{$element} = (string) $el;
+				if(count($this->structures) == $index ) {
+					$this->structures[$index] = new StdClass;
+				}
+				$this->structures[$index]->{$element} = (string) $el;
+				$index++;
 				$delta++;
 			}
 		}
@@ -379,9 +399,11 @@ class bbPlanetStru
 
 	function getAllMultiple($taginfo)
 	{
+
 		$storer = new bbPlanetStorer();
 		$replacement = $storer->getTagReplace($taginfo->wholeTag);
 		if($replacement) return $replacement;
+
 		$formatter = new bbPlanetFormatter();
 		$this->lastcount = 0;
 		$calcString = '';

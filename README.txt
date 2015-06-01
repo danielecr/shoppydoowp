@@ -2,7 +2,7 @@
 Contributors: danielecr
 Donate link: http://www.smartango.com/
 Tags: appartment, receiptive, feed, link
-Stable tag: 1.2
+Stable tag: 1.3
 Requires at least: 3.1
 Tested up to: 4.2
 License: GPLv2 or later
@@ -40,6 +40,9 @@ the table.
 
 
 == Changelog ==
+
+= 1.3 =
+* add strict mode to the tag: show only one category
 
 = 1.2 =
 * fix get remote file (use wp_remote_get)

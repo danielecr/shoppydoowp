@@ -100,13 +100,28 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano,Lecce]]";
+		$thetag = "[[bbplanet:Taviano,Lecce|cat:BB]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$this->assertTrue(count($bbparser->tags) == 1);
 		$this->assertTrue(count($bbparser->tags[0]->cities) == 2);
 		$this->assertTrue($bbparser->tags[0]->cities[0] == 'Taviano');
 		$this->assertTrue($bbparser->tags[0]->cities[1] == 'Lecce');
+		$bbparser->calcReplacement();
+		print_r($bbparser->replacements);
+
+	}
+
+	function testTagParserAndPrintStrict()
+	{
+		$head = "my litte ";
+		$tail = " et all";
+		$thetag = "[[bbplanet:Pescara|cat:Albergo|strict]]";
+		$text = $head.$thetag.$tail;
+		$bbparser = new bbTagParser($text);
+		$this->assertTrue(count($bbparser->tags) == 1);
+		$this->assertTrue(count($bbparser->tags[0]->cities) == 1);
+		$this->assertTrue($bbparser->tags[0]->cities[0] == 'Pescara');
 		$bbparser->calcReplacement();
 		print_r($bbparser->replacements);
 
