@@ -24,17 +24,23 @@ class bbTagParser
 	 */
 	var $tags = array();
 	var $replacements = array();
+	var $strict_mode = false;
 	var $error = false;
 	function __construct($content)
 	{
-		if(preg_match('/\[\[bbplanet\:([^|]+)\|?(cat:(.*))?\]\]/',$content,$matches)) {
+		if(preg_match('/\[\[bbplanet\:([^|]+)(\|cat:([^|]+))?(\|(strict))?\]\]/',$content,$matches)) {
 			$whole = $matches[0];
 			$city = $matches[1];
 			$cat = null;
 			if(isset($matches[3])) {
 				$cat = $matches[3];
 			}
-			$ti = new bbTagInfos($whole,$city,$cat);
+			if(isset($matches[5]) && $matches[5] == 'strict') {
+				$strict_mode = true;
+			} else {
+				$strict_mode = false;
+			}
+			$ti = new bbTagInfos($whole,$city,$cat,$strict_mode);
 			$this->tags[] = $ti;
 			if($ti->hasError()) {
 				$this->error = true;
@@ -73,13 +79,15 @@ class bbTagInfos implements Iterator
 	var $catGood = array();
 	var $error = false;
 	var $errors = array();
+	public $strict_mode = false;
 
-	function __construct($whole,$cities,$cats='')
+	function __construct($whole,$cities,$cats='',$strictMode = false)
 	{
 		$this->wholeTag = $whole;
 		$this->parseCities($cities);
 		$this->parseCats($cats);
 		$this->calcIter();
+		$this->strict_mode = $strictMode;
 	}
 
 	function parseCities($cities)
@@ -114,6 +122,7 @@ class bbTagInfos implements Iterator
 		$couple= new StdClass();
 		$couple->city = $city;
 		$couple->cat = $cat;
+		$couple->strict_mode = $this->strict_mode;
 		return $couple;
 	}
 
@@ -219,16 +228,16 @@ class bbParsedStru
 	var $structures = array();
 	var $iC =0;
 
-	function __construct($xml = NULL)
+	function __construct($xml = NULL,$filter = NULL)
 	{
 		if($xml) {
-			$this->parseXml($xml);
+			$this->parseXml($xml,$filter);
 		}
 	}
 	function add($xml = NULL)
 	{
 		if($xml) {
-			$this->parseXml($xml);
+			$this->parseXml($xml,$filter);
 		}
 	}
 
@@ -243,7 +252,7 @@ class bbParsedStru
 		return $this->structures[$this->iC++];
 	}
 
-	function parseXml($xml)
+	function parseXml($xml,$filter = NULL)
 	{
 		$ff = count($this->structures);
 		foreach(bbParsedStru::$elements as $element) {
@@ -323,19 +332,21 @@ class bbPlanetStru
 		return 0;
 	}
 
-	public function getStructs($localita, $type = NULL)
+	public function getStructs($localita, $type = NULL,$strict=false)
 	{
 		$basePar = array('l'=>$localita,'t'=>$type);
 		$xml = $this->getTheXml($basePar);
 		$nstrutture = $this->getNStrutture($xml);
-		$parsed = new bbParsedStru($xml);
+		if($strict && $type != NULL) { $filter = $type; }
+		else {$filter = NULL; }
+		$parsed = new bbParsedStru($xml,$filter);
 
 		if($nstrutture>10) {
 			$p = 1;
 			do {
 				$basePar['p'] = $p;
 				$xml = $this->getTheXml($basePar);
-				$parsed->add($xml);
+				$parsed->add($xml,$filter);
 				$p++;
 			}while($p*10<$nstrutture);
 		}
@@ -375,7 +386,7 @@ class bbPlanetStru
 		$this->lastcount = 0;
 		$calcString = '';
 		foreach($taginfo as $i => $tp) {
-			$parsed = $this->getStructs($tp->city, $tp->cat);
+			$parsed = $this->getStructs($tp->city, $tp->cat, $tp->strict_mode);
 			$this->lastcount += count($parsed->structures);
 			$calcString .= $formatter->formatAll($parsed->structures);
 		}
@@ -425,7 +436,7 @@ class bbPlanetFormatter
 		foreach($structures as $stru) {
 			$content .= $this->formatStruct($stru);
 		}
-		return $this->begin . $content . $this->end . "1n\n";
+		return $this->begin . $content . $this->end . "\n";
 	}
 }
 

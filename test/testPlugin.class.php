@@ -1,5 +1,11 @@
 <?php
 
+require "./fakeWpdb.php";
+$wpdb = new WPDB();
+global $wpdb;
+$running_test = true;
+global $running_test;
+
 require_once "../bbplanetwp.php";
 
 class testPlugin extends PHPUnit_Framework_TestCase
