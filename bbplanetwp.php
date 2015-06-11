@@ -4,7 +4,7 @@
    Plugin URI: http://www.smartango.com/
    Description: Inject BBPlanet hotels et all into wp articles
    Author: Daniele Cruciani
-   Version: 1.3
+   Version: 1.4
    Author URI: http://www.smartango.com 
 */
 
@@ -380,10 +380,10 @@ class bbPlanetStru
 			    'lang' => $this->lang,
 			);
 		if(isset($params['t']) && $params['t'] != NULL) {
-			$qs['tipologia'] = $params['t'];
+			$qp['tipologia'] = $params['t'];
 		}
 		if(isset($params['p']) && $params['p'] != NULL) {
-			$qs['p'] = $params['p'];
+			$qp['p'] = $params['p'];
 		}
 		$qs = http_build_query($qp);
 		return $this->baseStUrl . '?' .$qs;

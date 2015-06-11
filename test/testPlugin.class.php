@@ -127,7 +127,33 @@ class testPlugin extends PHPUnit_Framework_TestCase
 
 	}
 
+	function testTagNardoAndPrint()
+	{
+		$head = "my litte ";
+		$tail = " et all";
+		$thetag = "[[bbplanet:Nardò|cat:Albergo]]";
+		$text = $head.$thetag.$tail;
+		$bbparser = new bbTagParser($text);
+		print_r($bbparser);
+		$this->assertTrue(count($bbparser->tags) == 1);
+		$this->assertTrue(count($bbparser->tags[0]->cities) == 1);
+		$this->assertTrue($bbparser->tags[0]->cities[0] == 'Nardò');
+		$bbparser->calcReplacement();
+		print_r($bbparser->replacements);
 
+	}
+
+	function testTagIsidoroNardoAndPrint()
+	{
+		$head = "my litte ";
+		$tail = " et all";
+		$thetag = "[[bbplanet:Sant'Isidoro di Nardo|cat:Albergo]]";
+		$text = $head.$thetag.$tail;
+		$bbparser = new bbTagParser($text);
+		print_r($bbparser);
+		$bbparser->calcReplacement();
+		print_r($bbparser->replacements);
+	}
 }
 
 function get_option()
@@ -136,6 +162,8 @@ function get_option()
 		'ida'=>'10463',
 		'head'=>'<ul>',
 		'tail'=>'</ul>',
-		'snippet'=>'<li>[[citta]]</li>'
+		'snippet'=>'<li>[[citta]]</li>',
+		'tmpl_version'=> 1,
+		'duration' => 99999999,
 		);
 }

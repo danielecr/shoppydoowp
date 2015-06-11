@@ -17,9 +17,9 @@ class WPDB
 					     $dbconf['dbname']
 			);
 	}
+
 	function query($param)
 	{
-		print "PARAM::: $param\n";
 		return $this->conn->query($param);
 	}
 
