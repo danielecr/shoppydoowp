@@ -2,7 +2,7 @@
 
 require_once "shoppydoowp.php";
 
-class shoppyDooStorer
+class shoppyDooWpStorer
 {
 	function __construct()
 	{

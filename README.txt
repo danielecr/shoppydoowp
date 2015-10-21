@@ -1,8 +1,8 @@
-=== bbplanet feed ===
+=== shoppydoo feed ===
 Contributors: danielecr
 Donate link: http://www.smartango.com/
 Tags: appartment, receiptive, feed, link
-Stable tag: 1.4
+Stable tag: 1.0
 Requires at least: 3.1
 Tested up to: 4.2
 License: GPLv2 or later
@@ -10,17 +10,16 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Display a list of available (in bbplanet) receiptive structure
-(hotel,b&b, appartments, residence, agriturism) in an article.
+Display a list of available shoopy offer from 7pixel (shoppydoo)
 
 Insert the right tag in the article and with this plugin
-activated it will be listed all structure available from
-bbplanet.net feed
+activated it will be listed all offers available from
+shoppydoo.com feed
 
-Tag format is: [[bbplanet:Gallipoli|cat:Albergo]]
-Gallipoli is the city (more city could be specified separing
-with comma ','), categories are one or more of: 'BB','Albergo',
-'Appartamento','Agriturismo','Residence'.
+Tag format is: [[7pixel:cat1,cat2|keywords:a,b|NN:num]]
+cat1,cat2 are categories
+a,b  keywords
+num: number of offers to show
 
 
 == Installation ==
@@ -41,21 +40,6 @@ the table.
 
 == Changelog ==
 
-= 1.4 =
-* fix problem with parameters not sent (typo on array name)
-
-= 1.3 =
-* add strict mode to the tag: show only one category
-
-= 1.2 =
-* fix get remote file (use wp_remote_get)
-
-= 1.1 =
-* add language support
-* reorder description
-
 = 1.0 =
-* a working version
+* a working version (port from bbplanet)
 
-= 0.1 =
-* initial release (only readme)

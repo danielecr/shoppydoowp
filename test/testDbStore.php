@@ -2,13 +2,13 @@
 
 require_once "fakeWpdb.php";
 
-require_once "../bbplanetwp.php";
+require_once "../shoppydoowp.php";
 
 class testDbStore extends PHPUnit_Framework_TestCase
 {
 	function testMyretrive()
 	{
-		$storer = new bbPlanetStorer();
+		$storer = new shoppyDooStorer();
 		$tag = '[[afaketag]]';
 		$replacement = $storer->getTagReplace($tag);
 		$this->assertTrue($replacement === false);
@@ -17,7 +17,7 @@ class testDbStore extends PHPUnit_Framework_TestCase
 
 	function testStore()
 	{
-		$storer = new bbPlanetStorer();
+		$storer = new shoppyDooStorer();
 		$tag = '[[afaketag]]';
 		$replace = 'a long string to replace it';
 		$storer->storeTagReplacement($tag,$replace,$duration);

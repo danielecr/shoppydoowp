@@ -1,7 +1,7 @@
 <?php
 
 
-require_once "../bbplanetwp.php";
+require_once "../bbtagparser.class.php";
 
 class testPlugin extends PHPUnit_Framework_TestCase
 {
@@ -10,7 +10,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano e|cat:C]]";
+		$thetag = "[[7pixel:123,123|keywords:uno,e|TN]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$ti = $bbparser->tags[0];
@@ -25,7 +25,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano|cat:BB|strict]]";
+		$thetag = "[[7pixel:Taviano|cat:BB|strict]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$ti = $bbparser->tags[0];

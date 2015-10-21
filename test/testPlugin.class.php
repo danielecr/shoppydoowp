@@ -14,7 +14,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano|cat:C]]";
+		$thetag = "[[7pixel:Taviano|cat:C]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$bbparser->calcReplacement();
@@ -44,7 +44,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano,Lecce|cat:Albergo,BB]]";
+		$thetag = "[[7pixel:Taviano,Lecce|cat:Albergo,BB]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$this->assertTrue(count($bbparser->tags) == 1);
@@ -59,7 +59,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Torre San Giovanni|cat:Albergo]]";
+		$thetag = "[[7pixel:Torre San Giovanni|cat:Albergo]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$this->assertTrue(count($bbparser->tags) == 1);
@@ -79,7 +79,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano,Lecce|cat:Albergo,PP]]";
+		$thetag = "[[7pixel:Taviano,Lecce|cat:Albergo,PP]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$this->assertTrue(count($bbparser->tags) == 1);
@@ -100,7 +100,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Taviano,Lecce|cat:BB]]";
+		$thetag = "[[7pixel:Taviano,Lecce|cat:BB]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$this->assertTrue(count($bbparser->tags) == 1);
@@ -116,7 +116,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Pescara|cat:Albergo|strict]]";
+		$thetag = "[[7pixel:Pescara|cat:Albergo|strict]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		$this->assertTrue(count($bbparser->tags) == 1);
@@ -131,7 +131,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Nardò|cat:Albergo]]";
+		$thetag = "[[7pixel:Nardò|cat:Albergo]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		print_r($bbparser);
@@ -147,7 +147,7 @@ class testPlugin extends PHPUnit_Framework_TestCase
 	{
 		$head = "my litte ";
 		$tail = " et all";
-		$thetag = "[[bbplanet:Sant'Isidoro di Nardo|cat:Albergo]]";
+		$thetag = "[[7pixel:Sant'Isidoro di Nardo|cat:Albergo]]";
 		$text = $head.$thetag.$tail;
 		$bbparser = new bbTagParser($text);
 		print_r($bbparser);
