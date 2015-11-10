@@ -42,12 +42,23 @@ hierarchicalDropDown.prototype = {
 	this.cbSelection = cbSelection;
 	this.cbOptions = cbOptions;
     },
+    reset: function() {
+	this.exclusionList = [];
+	this.onSelect(-1);
+    },
     exclusionList: [],
     selectionWithExclusion: [],
-    setExclusion: function (code) {	
-	this.exclusionList.push(parseInt(code));
+    setExclusion: function (code) {
+	if(this.exclusionList.indexOf(parseInt(code)) == -1) {
+	    this.exclusionList.push(parseInt(code));
+	}
     },
-
+    removeExclusion: function(code){
+	var ic = this.exclusionList.indexOf(parseInt(code));
+	if(ic!=-1) {
+	    this.exclusionList = this.exclusionList.splice(ic,1);
+	}
+    }
 };
 // use it as:
 //var h_dd = new hierarchicalDropDown()
@@ -65,68 +76,95 @@ TagCreator.prototype = {
 	self.id = id;
 	
 	self.containerQ = jQuery(id);
-	//self.addactions();
+	self.addactions();
 	self.targetAjax = $("#sdwp-target-ajax").val();
-	console.log (  self.targetAjax) ;
+	//console.log (  self.targetAjax) ;
 	jQuery("#sdwp-insert-btn").on('click',function(e) {
-	    var theTag = this.synthetizeTag();
-	    top.tinymce.activeEditor.insertContent(theTag + 'Title: ' + e.target);
+	    var theTag = self.synthetizeTag();
+	    top.tinymce.activeEditor.insertContent(theTag);
 
 	    top.tinymce.activeEditor.windowManager.close();
 	    console.log('esso mi vede');
 	});
-	//top.tinymce.activeEditor.windowManager.close();
-	console.log('size of it', jQuery("#sdwp-insert-btn").size());
+	jQuery("#selection-limit").on('change',self.renderTagPreview.bind(self));
+	jQuery("#keywords-sel").on('change',self.renderTagPreview.bind(self))
+	    .val($("#title").val());
+	jQuery('#resetpath').on('click',self.resetPath.bind(self));
+	jQuery('#clearcatlist').on('click',function(e) {self.categoryList = []; self.renderTagPreview.bind(self) });
 	this.getCategoryList();
     },
-    sinthetizeTag: function() {
-	return "[[]]";
+    synthetizeTag: function() {
+	var self=this, catlist
+	if(self.categoryList.length>0) {
+	    catlist = self.categoryList.join(',');
+	} else {
+	    catlist = '-1';
+	}
+	var keywords = 	jQuery("#keywords-sel").val();
+	if(keywords.trim() != '') keywords = "|keywords:" + keywords;//.split(/\s+|,/).join(',');
+	var rncode = jQuery("#selection-limit").val();
+	return "[[7pixel:"+catlist+keywords+"|resNumCode:"+rncode+"]]";
     },
     addactions: function(){
 	var self = this;
-	//jQuery(".add-category",self.containerQ).on('click',self.addCategory.bind(self))
+	jQuery(".add-category",self.containerQ).on('click',self.addCategory.bind(self))
+    },
+    resetPath: function(e){
+	var self = this;
+	self.h_dd.reset();
+    },
+    renderTagPreview: function(){
+	jQuery("#shoppy-the-tag").val(this.synthetizeTag());
     },
     availCategories: [],
     categoryList: [],
     addCategory: function(e) {
 	var self = this
-	var value = $(".category", self.containerQ).val();
-	self.categoryList.push(parseInt(value));
-	self.fillCategories();
-	console.log(self.categoryList);
+	if(self.currentCat == undefined) {
+	    console.log('currentCat is undefined');
+	    return;
+	}
+	var value = parseInt(self.currentCat.code);
+	if(self.categoryList.indexOf(value) != -1) {
+	    return;
+	}
+	self.categoryList.push(value);
+	console.log('categorylist: ',self.categoryList);
 	e.preventDefault();
+	self.renderTagPreview();
+	self.resetPath();
 	return false;
-    },
-    fillCategories: function(){
-	var self = this;
-	var theSelect = jQuery(".category", self.containerQ)
-	theSelect.html('');
-	$.each(self.availCategories,function(i,el){
-	    console.log('index of ',i, el, self.categoryList.indexOf(i),self.categoryList);
-	    if(self.categoryList.indexOf(parseInt(el.value)) === -1 ) {
-		theSelect.append($("<option>").html(el.text).val(el.value));
-	    }
-	})
     },
     currentPath: [],
     currentCat: undefined,
     fillSelection: function(sel){
 	console.log('currentSel',sel);
-	if(sel.code == -1) {
-	    this.currentPath = [sel];
-	} else {
-	    var idxOf = this.currentPath.indexOf(sel);
-	    console.log('index of',idxOf);
-	    if(idxOf >=0) {
-		while(this.currentPath.length -1 > idxOf) {
-		    this.currentPath.pop();
-		}
-	    } else {
-		this.currentPath.push(sel);
+	console.log(this.h_dd.exclusionList);
+	var idxOf = this.currentPath.indexOf(sel);
+	console.log('index of',idxOf);
+	if(idxOf >=0) {
+	    while(this.currentPath.length -1 > idxOf) {
+		var v = this.currentPath.pop();
+		this.h_dd.removeExclusion(v.code);
 	    }
+	} else {
+	    this.currentPath.push(sel);
 	}
+	this.renderCurrentPath();
 	console.log( 'current PATH: ',this.currentPath);
 	this.currentCat = sel;
+    },
+    renderCurrentPath: function() {
+	jQuery('#catpath').html('');
+	var isVoid = true;
+	for(var x in this.currentPath) {
+	    if(!isVoid) {
+		jQuery('#catpath').append(jQuery('<span>').html(' > '));
+	    }
+	    var v = this.currentPath[x];
+	    jQuery('#catpath').append(jQuery('<small>').append(jQuery('<strong>').html(v.catname)));
+	    isVoid = false;
+	}
     },
     selectOne: function(e) {
 	var val = jQuery(e.target).val();
@@ -165,7 +203,7 @@ TagCreator.prototype = {
 	this.h_dd = h_dd;
 	h_dd.init(data);
 	h_dd.setupCB(function(sel) {self.fillSelection(sel);},function(opts) {self.fillOptions(opts);});
-	console.log(data);
+	self.availCategories = data;
 	h_dd.onSelect(-1);
 	return;
     },
@@ -190,21 +228,43 @@ TagCreator.prototype = {
   <h4>Crea tag shoppydoo</h4>
   <div>
   Aggiungi categoria: 
-  <select class="category">
-    <option>c</option>
-  </select>
-  <button class="add-category">Aggiungi</button>
-  </div>
-  <div>
-  
-  </div>
-  
-  <div>Tag risultante: 
-      <input id="shoppy-the-tag" class="resulting-tag" name="the_tag" readonly="readonly" />
+    <select class="category"></select>
+    <div class="hint">
+    <h6 style="margin-bottom: 2px;">Path:</h6>
+    <p style="margin-top: 2px;" id="catpath"></p>
+    </div><!-- end hint -->
+    
+    <button class="add-category">Aggiungi</button>
+    <button id="resetpath">Reset</button>
 
+    <div id="category-list">
+    </div>
+
+</div>
+  <div>
+    Aggiungi keyword:
+<input id="keywords-sel" />
+  </div>
+
+  <div>
+    Numero Insersioni:
+    <select id="selection-limit">
+    <option value="TH">2</option>
+    <option value="ZF">5</option>
+    <option value="TN" selected="selected">10</option>
+    <option value="FT">15</option>
+    <option value="TW">20</option>
+    <option value="TF">25</option>
+    <option value="TT">30</option>
+    </select>
+  </div>
+
+  <div>Tag risultante: 
+      <input id="shoppy-the-tag" size="40" class="resulting-tag" name="the_tag" readonly="readonly" />
   </div>
   <div>
-	  <button id="sdwp-insert-btn">Inserisci</button>
+    <button id="clearcatlist">azzera selezione categorie</button>
+    <button id="sdwp-insert-btn">Inserisci</button>
   </div>
   
   </div>
