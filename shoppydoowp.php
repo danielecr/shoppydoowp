@@ -13,8 +13,53 @@ if(function_exists('add_filter')) {
 	add_action('edit_form_after_title', 'shoppydoowp_edit_form_after_title' );
 }
 
+if(function_exists('add_action') ) {
+	// tinymce plugin
+	require_once 'tinymce_shoppydoo_tagcreator.class.php';
+	add_action( 'wp_ajax_shoppydoo_product_categories_action', 'shoppydoowp_list_categories_cb' );
+}
+
+function shoppydoowp_list_categories_cb($hook) {
+	// get category list xml call ??????
+	$categories = shoppydoowp_parse_remote_categories();
+	//$categories = array('10'=>'myfirst category','2'=>'my second category','3'=>'mythird');
+	header('Content-type: application/json');
+	echo json_encode($categories);
+	wp_die();
+}
+
+function shoppydoowp_parse_remote_categories() {
+	$url= "https://quickshop.shoppydoo.it/categories.aspx";
+	
+	$content = wp_remote_get($url);
+	if(! $content || !isset($content['body']) ) {
+		return array();
+	}
+	$content = $content['body'];
+	//error_log(print_r($content,TRUE));
+	$doc = new DOMDocument();
+	$doc->loadHTML($content);
+	$xpath = new DOMXPath($doc);
+	$doc->normalizeDocument();
+	$struct = new stdClass();
+	$struct->childs = array();
+
+	$catz = new categorizer(-1);
+	
+	$divs = $xpath->query('/html/body/div');
+	foreach( $divs as $ctx_div)  {
+		$dl = $xpath->query('ul',$ctx_div);
+		foreach ( $dl as $ul) {
+			$catz->addSubFromUL($ul);
+		}
+	}
+	return $catz->getArrayWithParent();
+}
+
 function shoppydoowp_edit_form_after_title() {
-    echo '<strong>ShoppydooWP tag example</strong>: [[shoppydoowp:Gallipoli|cat:Appartamento]]';
+	include "tmpl/tag-creator.php";
+	//$plug_url = plugins_url('js/shoppytag-creator.js',__FILE__);
+	//wp_enqueue_script( 'shoppytag-creator', $plug_url, array('jquery') );
 }
 
 require_once "bbtagparser.class.php";
@@ -71,4 +116,6 @@ require_once "shoppydooformatter.class.php";
 require_once 'shoppydoowp-admin.php';
 require_once 'shoppydoowp-install.php';
 require_once 'shoppydoowp-storer.php';
+
+require_once "categorizer.class.php";
 
