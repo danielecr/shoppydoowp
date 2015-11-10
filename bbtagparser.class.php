@@ -15,9 +15,10 @@ class bbTagParser
 	var $error = false;
 	function __construct($content)
 	{
-		if(!preg_match('/\[\[([^\]]+)?\]\]/',$content,$matchTag)) {
+		if(!preg_match_all('/\[\[([^\]]+)?\]\]/',$content,$matchTagAll,PREG_SET_ORDER)) {
 			return;
 		}
+		foreach($matchTagAll as $matchTag) {
 		$whole = $matchTag[0];
 		$vardefs = preg_split('/\|/',$matchTag[1]);
 		$tagElements = array();
@@ -35,12 +36,13 @@ class bbTagParser
 				
 			}
 			list($varname, $value) = $name_val;
-			if(preg_match('/^[0-9a-z]+$/',$name_val[0])) {
+			if(preg_match('/^[0-9a-zA-Z]+$/',$name_val[0])) {
 				$tagElements[$varname]  = $value;
 			}
 		}
 		if(count($tagElements) > 0 )  {
 			$this->tags[] = new TagInfo($whole,$tagElements);
+		}
 		}
 		return;
 	}

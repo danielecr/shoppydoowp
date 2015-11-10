@@ -17,12 +17,10 @@ function shoppydoowp_first_option_setup()
 		$options = get_option('shoppydoowp_options');
 		if(!$options && !$options['head']) {
 			$options['head'] = '<ul>';
-			$options['tail'] = '<li>
-<a href="[[linkstruttura]]">[[nomestruttura]]</a> [[tipologiaestesa]]
-[[descrizione]]<br />
-Posti Letto: <strong>[[npostiletto]]</strong>
-</li>';
-			$options['snippet'] = '</ul>';
+			$options['snippet'] = '<li><a href="[[url]]" target="_blank"><img src="[[smallImage]]" />[[availabilityDescr]]
+
+[[merchant]]</a></li>';
+			$options['tail'] = '</ul>';
 			$options['duration'] = 3600;
 			$options['partnerid'] = 'tecnomagazineit';
 			update_option('shoppydoowp_options',$options);

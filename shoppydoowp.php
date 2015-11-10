@@ -28,32 +28,47 @@ function shoppydoowp_list_categories_cb($hook) {
 	wp_die();
 }
 
-function shoppydoowp_parse_remote_categories() {
+function shoppydoowp_retrieve_catlist()
+{
 	$url= "https://quickshop.shoppydoo.it/categories.aspx";
 	
 	$content = wp_remote_get($url);
 	if(! $content || !isset($content['body']) ) {
 		return array();
 	}
-	$content = $content['body'];
-	//error_log(print_r($content,TRUE));
-	$doc = new DOMDocument();
-	$doc->loadHTML($content);
-	$xpath = new DOMXPath($doc);
-	$doc->normalizeDocument();
-	$struct = new stdClass();
-	$struct->childs = array();
+	$body = $content['body'];
+	return $body;
+}
 
-	$catz = new categorizer(-1);
+function shoppydoowp_parse_remote_categories() {
+	$options = get_option('shoppydoowp_catcache');
+	if(!isset($options['timeout']) || $options['timeout'] > time() ) {
+		$content = shoppydoowp_retrieve_catlist();
+		//error_log(print_r($content,TRUE));
+		$doc = new DOMDocument();
+		$doc->loadHTML($content);
+		$xpath = new DOMXPath($doc);
+		$doc->normalizeDocument();
+		$struct = new stdClass();
+		$struct->childs = array();
+
+		$catz = new categorizer(-1);
 	
-	$divs = $xpath->query('/html/body/div');
-	foreach( $divs as $ctx_div)  {
-		$dl = $xpath->query('ul',$ctx_div);
-		foreach ( $dl as $ul) {
-			$catz->addSubFromUL($ul);
+		$divs = $xpath->query('/html/body/div');
+		foreach( $divs as $ctx_div)  {
+			$dl = $xpath->query('ul',$ctx_div);
+			foreach ( $dl as $ul) {
+				$catz->addSubFromUL($ul);
+			}
 		}
+		$arrWithPar = $catz->getArrayWithParent();
+		$options['timeout'] = time() + 3600 * 24 *30;
+		$options['categories'] = $arrWithPar;
+		update_option('shoppydoowp_catcache',$options);
+
+		//return $arrWithPar;
 	}
-	return $catz->getArrayWithParent();
+	return $options['categories'];
 }
 
 function shoppydoowp_edit_form_after_title() {
@@ -75,6 +90,8 @@ function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
 {
 	if($cat==NULL) $cat="20191";
 	$partenerid = "cellularmagazineit";
+	$options = get_option('shoppydoowp_options');
+	$partenerid = $options['partnerid'];
 	$marcamodello = preg_replace(array("/[:\)\(\s]+/"),array("_"),strtolower($shop_stringa));
 	if($cat == NULL ) {
 		$cat = '20191';
@@ -88,7 +105,11 @@ function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
 		
 		$loader = new shoppyDooLoader();
 		$offers = $loader->getAllOffers($taginfo);
-		return $offers;
+		$a = new stdClass();
+		if(count($offers)) {
+			$a->product = $offers;
+		}
+		return $a;
 	}
 	return false;
 }
@@ -97,6 +118,7 @@ function shoppydoowp_parse($content='')
 {
 	$bbparser = new bbTagParser($content);
 	$bbparser->calcReplacement();
+	//error_log(print_r($bbparser->replacements,TRUE));
 	return str_replace(array_keys($bbparser->replacements),
 		    array_values($bbparser->replacements),
 		    $content

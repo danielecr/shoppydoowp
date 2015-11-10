@@ -36,7 +36,7 @@ class shoppyDooFormatter
 
 	function format($structures)
 	{
-		error_log(print_r($structures,TRUE));
+		//error_log(print_r($structures,TRUE));
 		$content = '';
 		foreach($structures as $stru) {
 			$content .= $this->formatStruct($stru);
