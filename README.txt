@@ -1,7 +1,8 @@
 === shoppydoo feed ===
-Contributors: danielecr
-Donate link: http://www.smartango.com/
-Tags: appartment, receiptive, feed, link
+Author: Daniele Cruciani <daniele@smartango.com>
+Author URI: http://smartango.com/
+Donate link: http://smartango.com/
+Tags: affiliate, shoppydoo
 Stable tag: 1.0
 Requires at least: 3.1
 Tested up to: 4.2
@@ -29,17 +30,10 @@ Copy this folder in directory wp-content/plugins/ of your wordpress
 Make sure the script can write the cache directory, have a look
 via ftp, in doubt set it to 777
 
-== Upgrade ==
-
-I am experiencing some problem, deactivate and reactivate the module
-should fix those. Be carefull, just make a backup of table data
-(prefix_category_ext_feed), deactivate plugin, then reactivate.
-Thus if data about feed is not available anymore, just replace
-the table.
 
 
 == Changelog ==
 
 = 1.0 =
-* a working version (port from bbplanet)
+* a working version
 
