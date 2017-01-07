@@ -45,7 +45,7 @@ foreach(parsedXmlSource::$elements as $el) {
     ?>
     </div>
 </p>
-	<p><strong>Attenzione:</strong> modificando il template o cambiando i parametri si invaliderà la cache attuale delle strutture</p>
+	<p><strong>Attenzione:</strong> modificando il template o cambiando i parametri si invaliderà la cache attuale delle offerte</p>
 </div>
 <div>
 TAIL:	<input type="text" name="tail" value="<?=$options['tail']?>" /><br />
