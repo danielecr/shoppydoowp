@@ -4,27 +4,26 @@ $options = get_option('shoppydoowp_options');
 
 	<div class="wrap">
 <div>
-<h3>Come va usato</h3>
+<h3><?php _e('How it should be used','shoppydoowp');?></h3>
 <p>
-	Inserire nel testo degli articoli un tag come questo:
+	<?php _e('Insert into posts a tag like this:','shoppydoowp'); ?>
 	<br />
     <strong>[[7pixel:5,7|keywords:nexus,lg]]</strong>
 </p>
 <p>
-	Rispettare maiuscole e minuscole per la parte sinistra del tag:
+	<?php _e('Respect case on the tag:','shoppydoowp'); ?>
 <br/>
-    <strong><em>NO</em></strong> <strong>[[7PIXEL:5,7|keywords:nexus,lg]]</strong>
+    <strong class="error"><em>&lt;!-- <?php _e('KO (it does not work)','shoppydoowp');?> --&gt;</em></strong> <strong>[[7PIXEL:5,7|keywords:nexus,lg]]</strong>
     <br />
-    <strong><em>SÌ</em></strong> <strong>[[7pixel:5,7|keywords:nexus,lg]]</strong>
+    <strong><em>&lt;!-- <?php _e('OK (this will work)','shoppydoowp');?> --&gt;</em></strong> <strong>[[7pixel:5,7|keywords:nexus,lg]]</strong>
 </p>
 
 	<p>
-	<strong>ATTENZIONE</strong>: Per garantire il tracciamento click delle offerte è necessario
- aggiornare le offerte ogni 5 ore come minimo.
+	<strong><?php _e('Be aware','shoppydoowp'); ?></strong>: <?php _e('To be sure offers link are currectly tracked, offer list must be refresh every 5 ours, at the very least','shoppydoowp'); ?>
 		</p>
 	
 </div>
-<h3>Setup</h3>
+<h3><?php _e('Setup','shoppydoowp');?></h3>
 <form action="" method="post">
 <div>
 	PartnerId:	<input type="text" name="partnerid" value="<?=$options['partnerid']?>" /><br />
@@ -36,7 +35,7 @@ Identificativo associate program
 <div>
 	BODY:	<textarea id="snippet-textarea" cols="50" rows="10" name="snippet"><?=$options['snippet']?></textarea>
 
-    <p>Tag disponibili:
+    <p><?php _e('Available Tags','shoppydoowp'); ?>:
     <div id="avail-tags">
     <?php
 foreach(parsedXmlSource::$elements as $el) {
@@ -44,21 +43,21 @@ foreach(parsedXmlSource::$elements as $el) {
 }
     ?>
     </div>
-</p>
-	<p><strong>Attenzione:</strong> modificando il template o cambiando i parametri si invaliderà la cache attuale delle offerte</p>
+    </p>
 </div>
 <div>
 TAIL:	<input type="text" name="tail" value="<?=$options['tail']?>" /><br />
 </div>
+<p><strong><?php _e('Warning','shoppydoowp')?>:</strong> <?php _e('Changing template or parameters, do will imply the invalidation of the whole cache of offers','shoppydoowp'); ?></p>
 
 <div>
-	Durata:
+	<?php _e('Duration','shoppydoowp'); ?>:
 <select name="duration">
 	<?php
 	$val_arr = array(
-			 '1200'=>'20 minuti',
-			 '3600'=>'1 Ora',
-			 '18000'=>'5 Ore',
+			 '1200'=>__('20 minutes','shoppydoowp'),
+			 '3600'=>__('1 Our','shoppydoowp'),
+			 '18000'=>__('5 Ours','shoppydoowp'),
 		);
 	foreach($val_arr as $v => $txt) {
 		if($options['duration'] == $v) {
@@ -73,11 +72,11 @@ TAIL:	<input type="text" name="tail" value="<?=$options['tail']?>" /><br />
 	?>
 </select>
 
-	<input type="submit" name="Expire" value="Pulisci cache" /><br />
+	<input type="submit" name="Expire" value="<?php _e('Flush cache','shoppyodoowp'); ?>" /><br />
 
 </div>
 <div>
-	<input type="submit" name="Submit" /><br />
+	<input type="submit" name="Submit" value="<?php _e('Submit','shoppyodoowp'); ?>" /><br />
 </div>
 	</form>
 			       

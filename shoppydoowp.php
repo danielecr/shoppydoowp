@@ -21,6 +21,8 @@ You should have received a copy of the GNU General Public License
 along with ShoppydooWP. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
+load_plugin_textdomain();
+
 if(function_exists('add_filter')) {
 	add_filter('the_content', 'shoppydoowp_parse');
 	add_action('edit_form_after_title', 'shoppydoowp_edit_form_after_title' );
@@ -30,6 +32,7 @@ if(function_exists('add_action') ) {
 	// tinymce plugin
 	require_once 'tinymce_shoppydoo_tagcreator.class.php';
 	add_action( 'wp_ajax_shoppydoo_product_categories_action', 'shoppydoowp_list_categories_cb' );
+	add_action( 'wp_ajax_shoppydoo_tag_window_tmpl_action', 'shoppydoowp_tag_window_tmpl' );
 }
 
 function shoppydoowp_list_categories_cb($hook) {
@@ -39,6 +42,10 @@ function shoppydoowp_list_categories_cb($hook) {
 	header('Content-type: application/json');
 	echo json_encode($categories);
 	wp_die();
+}
+
+function shoppydoowp_tag_window_tmpl($hook) {
+	include "tmpl/tag-creator-window.php";
 }
 
 function shoppydoowp_retrieve_catlist()

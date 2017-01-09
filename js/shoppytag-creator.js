@@ -1,9 +1,10 @@
 
 (function(){
     tinymce.PluginManager.add('tagcreator_class', function(editor, url) {
-	console.log(url + '/icon.png');
+	var buttonTitle = document.getElementById('sdwp-button-title').value;
+	var windowTitle = document.getElementById('sdwp-window-title').value;
 	editor.addButton('tagcreator_class', {
-	    title: 'Inserisci tag shoppy doo',
+	    title: buttonTitle,
 	    cmd: 'tagcreator_class',
 	    image: url + '/icon.png',
 	});
@@ -11,10 +12,10 @@
 	    editor.windowManager.open({
 		width: 600,
 		height: 500,
-		title: 'Crea il tag shoppydoo',
+		title: windowTitle,
 		url: url+ '/tag-creator.html',
 		onsubmit: function(e) {
-		    console.log('submit ' + e.data.title2);
+		    //console.log('submit ' + e.data.title2);
 		    editor.insertContent('Title: ' + e.data.title);
 		}
 	    }, {

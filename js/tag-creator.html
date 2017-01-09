@@ -8,9 +8,23 @@ var tcre;
 
 jQuery(function() {
     tcre = new TagCreator(jQuery);
-    console.log('init ... tagcreator');
-
+    function fillWindowTemplate(data) {
+    //console.log('tagwindow data',data);
+    jQuery("#s-tag-creator").html(data);
     tcre.init("#s-tag-creator");
+    
+    };
+    //console.log('init ... tagcreator');
+    var targetAjax = $("#sdwp-target-ajax").val();
+    //console.log('the target ajax',targetAjax);
+    
+    var data = {
+    'action': 'shoppydoo_tag_window_tmpl_action',
+    'tipo': 'val' // ajax_object.we_value      // We pass php values differently!
+    };
+    $.ajax({url:targetAjax, data:data,method:'post',success: fillWindowTemplate});
+    
+    //tcre.init("#s-tag-creator");
     //console.log('realsize', jQuery("#sdwp-insert-btn").size());
     
 });
@@ -225,46 +239,5 @@ TagCreator.prototype = {
 </script>
 
 <div id="s-tag-creator">
-  <h4>Crea tag shoppydoo</h4>
-  <div>
-  Aggiungi categoria: 
-    <select class="category"></select>
-    <div class="hint">
-    <h6 style="margin-bottom: 2px;">Path:</h6>
-    <p style="margin-top: 2px;" id="catpath"></p>
-    </div><!-- end hint -->
-    
-    <button class="add-category">Aggiungi</button>
-    <button id="resetpath">Reset</button>
-
-    <div id="category-list">
-    </div>
-
-</div>
-  <div>
-    Aggiungi keyword:
-<input id="keywords-sel" />
-  </div>
-
-  <div>
-    Numero Insersioni:
-    <select id="selection-limit">
-    <option value="TH">2</option>
-    <option value="ZF">5</option>
-    <option value="TN" selected="selected">10</option>
-    <option value="FT">15</option>
-    <option value="TW">20</option>
-    <option value="TF">25</option>
-    <option value="TT">30</option>
-    </select>
-  </div>
-
-  <div>Tag risultante: 
-      <input id="shoppy-the-tag" size="40" class="resulting-tag" name="the_tag" readonly="readonly" />
-  </div>
-  <div>
-    <button id="clearcatlist">azzera selezione categorie</button>
-    <button id="sdwp-insert-btn">Inserisci</button>
-  </div>
   
   </div>
