@@ -7,7 +7,7 @@ Donate link: http://smartango.com/
 Tags: affiliate, shoppydoo
 Stable tag: 1.0
 Requires at least: 3.1
-Tested up to: 4.2
+Tested up to: 4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
