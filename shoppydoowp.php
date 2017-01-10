@@ -109,7 +109,6 @@ function shoppydoowp_tagParser($content)
 function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
 {
 	if($cat==NULL) $cat="20191";
-	$partenerid = "cellularmagazineit";
 	$options = get_option('shoppydoowp_options');
 	$partenerid = $options['partnerid'];
 	$marcamodello = preg_replace(array("/[:\)\(\s]+/"),array("_"),strtolower($shop_stringa));
