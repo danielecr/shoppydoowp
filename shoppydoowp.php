@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with ShoppydooWP. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
-load_plugin_textdomain();
+//load_plugin_textdomain();
 
 if(function_exists('add_filter')) {
 	add_filter('the_content', 'shoppydoowp_parse');

@@ -27,8 +27,8 @@ class shoppyDooWpStorer
 	function getTagReplace($tagName)
 	{
 		global $wpdb;
-		$tagName = $wpdb->escape($tagName);
-		$repl = $wpdb->get_var("SELECT tagreplacement FROM $this->tname WHERE tagstring='$tagName'");
+		//$tagName = $wpdb->escape($tagName);
+		$repl = $wpdb->get_var($wpdb->prepare("SELECT tagreplacement FROM $this->tname WHERE tagstring=%s",$tagName));
 		if($repl) return $repl;
 		return FALSE;
 	}
@@ -60,10 +60,11 @@ class shoppyDooWpStorer
 				}
 			}
 		}
-		$tagname = $wpdb->escape($tag);
-		$replace = $wpdb->escape($replace);
+		//$tagname = $wpdb->escape($tag);
+		//$replace = $wpdb->escape($replace);
 		$now = time();
-		$wpdb->query("INSERT INTO `$this->tname`(tagstring,tagreplacement,updatetime,duration,templateversion) VALUES('$tagname', '$replace', '$now', '$duration', '$version')");
+		$wpdb->query($wpdb->prepare("INSERT INTO `$this->tname`(tagstring,tagreplacement,updatetime,duration,templateversion) VALUES(%s, %s, %d, %d, %s)", $tag, $replace, $now, $duration, $version));
+		//$wpdb->query("INSERT INTO `$this->tname`(tagstring,tagreplacement,updatetime,duration,templateversion) VALUES('$tagname', '$replace', '$now', '$duration', '$version')");
 	}
 }
 
