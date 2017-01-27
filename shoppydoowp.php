@@ -4,7 +4,7 @@
    Plugin URI: http://www.smartango.com/
    Description: Inject shoppydoo offer into wp articles
    Author: Daniele Cruciani
-   Version: 1.0
+   Version: 1.1
    Author URI: http://www.smartango.com 
 
 ShoppydooWP is free software: you can redistribute it and/or modify
