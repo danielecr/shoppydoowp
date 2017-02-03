@@ -1,24 +1,24 @@
 <?php
 /* 
-   Plugin Name: Shoppydoo Feed injector for Wordpress
+   Plugin Name: Earn from Shoppydoo (inject affilate links)
    Plugin URI: http://www.smartango.com/
    Description: Inject shoppydoo offer into wp articles
    Author: Daniele Cruciani
    Version: 1.1
    Author URI: http://www.smartango.com 
 
-ShoppydooWP is free software: you can redistribute it and/or modify
+Earn from Shoppydoo is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
 any later version.
  
-ShoppydooWP is distributed in the hope that it will be useful,
+Earn from Shoppydoo is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
  
 You should have received a copy of the GNU General Public License
-along with ShoppydooWP. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
+along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
 //load_plugin_textdomain();
@@ -154,8 +154,8 @@ require_once "shoppydooloader.class.php";
 
 require_once "shoppydooformatter.class.php";
 
-require_once 'shoppydoowp-admin.php';
-require_once 'shoppydoowp-install.php';
+require_once 'earnfromsd-admin.php';
+require_once 'earnfromsd-install.php';
 require_once 'shoppydoowp-storer.php';
 
 require_once "categorizer.class.php";

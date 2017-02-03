@@ -1,7 +1,7 @@
 === shoppydoo feed ===
 Author: Daniele Cruciani <daniele@smartango.com>
 Author URI: http://smartango.com/
-Text Domain: shoppydoowp
+Text Domain: shoppydoo
 Domain Path: /languages
 Donate link: http://smartango.com/
 Tags: affiliate, shoppydoo
