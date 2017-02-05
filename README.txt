@@ -1,4 +1,4 @@
-=== shoppydoo feed ===
+=== Earn from Shoppydoo ===
 Author: Daniele Cruciani <daniele@smartango.com>
 Author URI: http://smartango.com/
 Text Domain: shoppydoo
@@ -13,8 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Shoppydoo is a price comparator system. Shoppydoo is a product of 7Pixel s.r.l.
-I am not involved with them (altought a sponsorship would be nice from them)
+Earn money from affilate program of ShoppyDoo price comparator.
 
 Feature list:
 
@@ -26,6 +25,9 @@ Feature list:
    * offer list is configurable by: category/ies, keywords, number of offers
  * Editor plugin for generation of tag needed for placing the list into content
  * Caching of the offer list for limit the number of request and speeedup site (with expire timeout configurable)
+
+Note:
+Shoppydoo is a product of 7Pixel s.r.l. I am not involved with them (but a sponsorship would be welcomed)
 
 
 == Installation ==

@@ -1,7 +1,7 @@
 <?php
 /* 
    Plugin Name: Earn from Shoppydoo (inject affilate links)
-   Plugin URI: http://www.smartango.com/
+   Plugin URI: http://earnfromsd.smartango.com/
    Description: Inject shoppydoo offer into wp articles
    Author: Daniele Cruciani
    Version: 1.1
