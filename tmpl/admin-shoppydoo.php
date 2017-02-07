@@ -4,26 +4,26 @@ $options = get_option('shoppydoowp_options');
 
 	<div class="wrap">
 <div>
-<h3><?php _e('How it should be used','shoppydoowp');?></h3>
+<h3><?php _e('How it should be used','earnfromsd');?></h3>
 <p>
-	<?php _e('Insert into posts a tag like this:','shoppydoowp'); ?>
+	<?php _e('Insert into posts a tag like this:','earnfromsd'); ?>
 	<br />
     <strong>[[7pixel:5,7|keywords:nexus,lg]]</strong>
 </p>
 <p>
-	<?php _e('Respect case on the tag:','shoppydoowp'); ?>
+	<?php _e('Respect case on the tag:','earnfromsd'); ?>
 <br/>
-    <strong class="error"><em>&lt;!-- <?php _e('KO (it does not work)','shoppydoowp');?> --&gt;</em></strong> <strong>[[7PIXEL:5,7|keywords:nexus,lg]]</strong>
+    <strong class="error"><em>&lt;!-- <?php _e('KO (it does not work)','earnfromsd');?> --&gt;</em></strong> <strong>[[7PIXEL:5,7|keywords:nexus,lg]]</strong>
     <br />
-    <strong><em>&lt;!-- <?php _e('OK (this will work)','shoppydoowp');?> --&gt;</em></strong> <strong>[[7pixel:5,7|keywords:nexus,lg]]</strong>
+    <strong><em>&lt;!-- <?php _e('OK (this will work)','earnfromsd');?> --&gt;</em></strong> <strong>[[7pixel:5,7|keywords:nexus,lg]]</strong>
 </p>
 
 	<p>
-	<strong><?php _e('Be aware','shoppydoowp'); ?></strong>: <?php _e('To be sure offers link are currectly tracked, offer list must be refresh every 5 ours, at the very least','shoppydoowp'); ?>
+	<strong><?php _e('Be aware','earnfromsd'); ?></strong>: <?php _e('To be sure offers link are currectly tracked, offer list must be refresh every 5 ours, at the very least','earnfromsd'); ?>
 		</p>
 	
 </div>
-<h3><?php _e('Setup','shoppydoowp');?></h3>
+<h3><?php _e('Setup','earnfromsd');?></h3>
 <form action="" method="post">
 <div>
 	PartnerId:	<input type="text" name="partnerid" value="<?=$options['partnerid']?>" /><br />
@@ -35,7 +35,7 @@ Identificativo associate program
 <div>
 	BODY:	<textarea id="snippet-textarea" cols="50" rows="10" name="snippet"><?=$options['snippet']?></textarea>
 
-    <p><?php _e('Available Tags','shoppydoowp'); ?>:
+    <p><?php _e('Available Tags','earnfromsd'); ?>:
     <div id="avail-tags">
     <?php
 foreach(parsedXmlSource::$elements as $el) {
@@ -48,16 +48,16 @@ foreach(parsedXmlSource::$elements as $el) {
 <div>
 TAIL:	<input type="text" name="tail" value="<?=$options['tail']?>" /><br />
 </div>
-<p><strong><?php _e('Warning','shoppydoowp')?>:</strong> <?php _e('Changing template or parameters, do will imply the invalidation of the whole cache of offers','shoppydoowp'); ?></p>
+<p><strong><?php _e('Warning','earnfromsd')?>:</strong> <?php _e('Changing template or parameters, do will imply the invalidation of the whole cache of offers','earnfromsd'); ?></p>
 
 <div>
-	<?php _e('Duration','shoppydoowp'); ?>:
+	<?php _e('Duration','earnfromsd'); ?>:
 <select name="duration">
 	<?php
 	$val_arr = array(
-			 '1200'=>__('20 minutes','shoppydoowp'),
-			 '3600'=>__('1 Our','shoppydoowp'),
-			 '18000'=>__('5 Ours','shoppydoowp'),
+			 '1200'=>__('20 minutes','earnfromsd'),
+			 '3600'=>__('1 Our','earnfromsd'),
+			 '18000'=>__('5 Ours','earnfromsd'),
 		);
 	foreach($val_arr as $v => $txt) {
 		if($options['duration'] == $v) {
