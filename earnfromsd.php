@@ -24,7 +24,7 @@ along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.
 //load_plugin_textdomain();
 
 if(function_exists('add_filter')) {
-	add_filter('the_content', 'shoppydoowp_parse');
+	add_filter('the_content', 'earnfromsd_parse');
 	add_action('edit_form_after_title', 'shoppydoowp_edit_form_after_title' );
 }
 
@@ -37,7 +37,7 @@ if(function_exists('add_action') ) {
 
 function shoppydoowp_list_categories_cb($hook) {
 	// get category list xml call ??????
-	$categories = shoppydoowp_parse_remote_categories();
+	$categories = earnfromsd_parse_remote_categories();
 	//$categories = array('10'=>'myfirst category','2'=>'my second category','3'=>'mythird');
 	header('Content-type: application/json');
 	echo json_encode($categories);
@@ -60,7 +60,7 @@ function shoppydoowp_retrieve_catlist()
 	return $body;
 }
 
-function shoppydoowp_parse_remote_categories() {
+function earnfromsd_parse_remote_categories() {
 	$options = get_option('shoppydoowp_catcache');
 	if(!isset($options['timeout']) || $options['timeout'] > time() ) {
 		$content = shoppydoowp_retrieve_catlist();
@@ -98,13 +98,7 @@ function shoppydoowp_edit_form_after_title() {
 }
 
 require_once "bbtagparser.class.php";
-require_once "bbtaginfos.class.php";
 
-
-function shoppydoowp_tagParser($content)
-{
-
-}
 
 function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
 {
@@ -133,7 +127,7 @@ function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
 	return false;
 }
 
-function shoppydoowp_parse($content='')
+function earnfromsd_parse($content='')
 {
 	$bbparser = new bbTagParser($content);
 	$bbparser->calcReplacement();
