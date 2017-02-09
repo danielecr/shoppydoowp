@@ -25,7 +25,7 @@ along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.
 
 if(function_exists('add_filter')) {
 	add_filter('the_content', 'earnfromsd_parse');
-	add_action('edit_form_after_title', 'shoppydoowp_edit_form_after_title' );
+	add_action('edit_form_after_title', 'earnfromsd_edit_form_after_title' );
 }
 
 if(function_exists('add_action') ) {
@@ -48,7 +48,7 @@ function shoppydoowp_tag_window_tmpl($hook) {
 	include "tmpl/tag-creator-window.php";
 }
 
-function shoppydoowp_retrieve_catlist()
+function earnfromsd_retrieve_catlist()
 {
 	$url= "https://quickshop.shoppydoo.it/categories.aspx";
 	
@@ -63,7 +63,7 @@ function shoppydoowp_retrieve_catlist()
 function earnfromsd_parse_remote_categories() {
 	$options = get_option('shoppydoowp_catcache');
 	if(!isset($options['timeout']) || $options['timeout'] > time() ) {
-		$content = shoppydoowp_retrieve_catlist();
+		$content = earnfromsd_retrieve_catlist();
 		//error_log(print_r($content,TRUE));
 		$doc = new DOMDocument();
 		$doc->loadHTML($content);
@@ -91,7 +91,7 @@ function earnfromsd_parse_remote_categories() {
 	return $options['categories'];
 }
 
-function shoppydoowp_edit_form_after_title() {
+function earnfromsd_edit_form_after_title() {
 	include "tmpl/tag-creator.php";
 	//$plug_url = plugins_url('js/shoppytag-creator.js',__FILE__);
 	//wp_enqueue_script( 'shoppytag-creator', $plug_url, array('jquery') );

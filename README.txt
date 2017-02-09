@@ -1,7 +1,7 @@
 === Earn from Shoppydoo ===
 Author: Daniele Cruciani <daniele@smartango.com>
 Author URI: http://smartango.com/
-Text Domain: shoppydoo
+Text Domain: earnfromsd
 Domain Path: /languages
 Donate link: http://smartango.com/
 Tags: affiliate, shoppydoo
