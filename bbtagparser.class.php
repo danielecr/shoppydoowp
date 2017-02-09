@@ -14,9 +14,13 @@ You should have received a copy of the GNU General Public License
 along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
+namespace EarnFromSD;
+
 require_once "taginfo.class.php";
 
 require_once "shoppydooloader.class.php";
+
+use \EarnFromSD\TagInfo;
 
 class bbTagParser
 {
@@ -70,7 +74,7 @@ class bbTagParser
 
 	function calcReplacement()
 	{
-		$loader = new shoppyDooLoader();
+		$loader = new \EarnFromSD\shoppyDooLoader();
 		//print_r($this->tags);
 		foreach($this->tags as $taginfo) {
 			$calcString = $loader->getAllMultiple($taginfo);

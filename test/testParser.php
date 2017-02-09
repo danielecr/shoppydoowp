@@ -16,6 +16,7 @@ along with ShoppydooWP. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 
 
 require_once "../bbtagparser.class.php";
+use \EarnFromSD\bbTagParser;
 
 class testPlugin extends PHPUnit_Framework_TestCase
 {

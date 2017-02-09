@@ -1,4 +1,5 @@
 <?php
+use \EarnFromSD\parsedXmlSource;
 $options = get_option('shoppydoowp_options');
 ?>
 

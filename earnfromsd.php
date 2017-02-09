@@ -72,7 +72,7 @@ function earnfromsd_parse_remote_categories() {
 		$struct = new stdClass();
 		$struct->childs = array();
 
-		$catz = new categorizer(-1);
+		$catz = new \EarnFromSD\categorizer(-1);
 	
 		$divs = $xpath->query('/html/body/div');
 		foreach( $divs as $ctx_div)  {
@@ -100,7 +100,7 @@ function shoppydoowp_edit_form_after_title() {
 require_once "bbtagparser.class.php";
 
 
-function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
+function earnfromsd_offerte($shop_stringa, $id=0, $cat=NULL)
 {
 	if($cat==NULL) $cat="20191";
 	$options = get_option('shoppydoowp_options');
@@ -111,12 +111,12 @@ function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
 	}
 	$tagstring = "[[7pixel:$cat|keywords:$marcamodello]]";
 
-	$bbparser = new bbTagParser($tagstring);
+	$bbparser = new \EarnFromSD\bbTagParser($tagstring);
 	if(count($bbparser->tags)) {
 		reset($bbparser->tags);
 		$taginfo = current($bbparser->tags);
 		
-		$loader = new shoppyDooLoader();
+		$loader = new \EarnFromSD\shoppyDooLoader();
 		$offers = $loader->getAllOffers($taginfo);
 		$a = new stdClass();
 		if(count($offers)) {
@@ -129,7 +129,7 @@ function shoppydoo_offerte($shop_stringa, $id=0, $cat=NULL)
 
 function earnfromsd_parse($content='')
 {
-	$bbparser = new bbTagParser($content);
+	$bbparser = new \EarnFromSD\bbTagParser($content);
 	$bbparser->calcReplacement();
 	//error_log(print_r($bbparser->replacements,TRUE));
 	return str_replace(array_keys($bbparser->replacements),

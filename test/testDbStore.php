@@ -17,6 +17,7 @@ along with ShoppydooWP. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 require_once "fakeWpdb.php";
 
 require_once "../shoppydoowp.php";
+use \EarnFromSD\shoppyDooStorer;
 
 class testDbStore extends PHPUnit_Framework_TestCase
 {

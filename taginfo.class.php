@@ -14,7 +14,9 @@ You should have received a copy of the GNU General Public License
 along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
-class TagInfo implements Iterator
+namespace EarnFromSD;
+
+class TagInfo implements \Iterator
 {
 	var $wholeTag = '';
 	var $tagElements = array();

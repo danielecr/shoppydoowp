@@ -14,6 +14,8 @@ You should have received a copy of the GNU General Public License
 along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
+namespace EarnFromSD;
+
 class parsedXmlSource
 {
 	static public $elements = array(
@@ -69,7 +71,7 @@ class parsedXmlSource
 	function parseXml($xml,$filter = NULL)
 	{
 		foreach($xml->product as $k => $el) {
-			$prod = new stdClass();
+			$prod = new \stdClass();
 			foreach($el as $tagname => $val) {
 				if(in_array($tagname,self::$elements)) {
 					$prod->$tagname = (string)$val;

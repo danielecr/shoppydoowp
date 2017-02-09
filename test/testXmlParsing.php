@@ -18,6 +18,8 @@ require_once "../bbtagparser.class.php";
 
 require_once "../shoppydooloader.class.php";
 
+use \EarnFromSD\bbTagParser;
+use \EarnFromSD\shoppyDooLoader;
 
 class shoppyDooStorer
 {
