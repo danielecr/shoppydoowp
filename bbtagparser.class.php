@@ -20,9 +20,6 @@ require_once "shoppydooloader.class.php";
 
 class bbTagParser
 {
-	/**
-	 * array(bbTagInfos)
-	 */
 	var $tags = array();
 	var $replacements = array();
 	var $strict_mode = false;

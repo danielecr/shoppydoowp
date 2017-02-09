@@ -14,6 +14,8 @@ You should have received a copy of the GNU General Public License
 along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
+namespace EarnFromSD;
+
 class bbTagInfos implements Iterator
 {
 	var $wholeTag = '';
