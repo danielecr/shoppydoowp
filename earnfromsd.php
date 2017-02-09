@@ -31,11 +31,11 @@ if(function_exists('add_filter')) {
 if(function_exists('add_action') ) {
 	// tinymce plugin
 	require_once 'tinymce_shoppydoo_tagcreator.class.php';
-	add_action( 'wp_ajax_shoppydoo_product_categories_action', 'shoppydoowp_list_categories_cb' );
+	add_action( 'wp_ajax_earnfromsd_product_categories_action', 'earnfromsd_list_categories_cb' );
 	add_action( 'wp_ajax_shoppydoo_tag_window_tmpl_action', 'shoppydoowp_tag_window_tmpl' );
 }
 
-function shoppydoowp_list_categories_cb($hook) {
+function earnfromsd_list_categories_cb($hook) {
 	// get category list xml call ??????
 	$categories = earnfromsd_parse_remote_categories();
 	//$categories = array('10'=>'myfirst category','2'=>'my second category','3'=>'mythird');
