@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with Earn from Shoppydoo. If not, see http://www.gnu.org/licenses/gpl-2.0.html .
 */
 
-class TinyMCE_shoppydoo_tagcreator
+class TinyMCE_earnfromsd_tagcreator
 {
 	function __construct()
 	{
@@ -40,16 +40,16 @@ class TinyMCE_shoppydoo_tagcreator
 
 	function add_tinymce_plugin($plugin_array )
 	{
-		$plugin_array['tagcreator_class'] = plugin_dir_url(__FILE__).'js/shoppytag-creator.js';
+		$plugin_array['earnfromsd_tagcreator_class'] = plugin_dir_url(__FILE__).'js/shoppytag-creator.js';
 		return $plugin_array;
 	}
 
 	function add_tinymce_toolbar_button($buttons)
 	{
-		array_push($buttons, 'tagcreator_class');
+		array_push($buttons, 'earnfromsd_tagcreator_class');
 		//return array();
 		return $buttons;
 	}
 }
 
-$tinymce_shoppydoo_tagc = new TinyMCE_shoppydoo_tagcreator();
+$tinymce_shoppydoo_tagc = new TinyMCE_earnfromsd_tagcreator();

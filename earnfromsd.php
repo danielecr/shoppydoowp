@@ -30,7 +30,7 @@ if(function_exists('add_filter')) {
 
 if(function_exists('add_action') ) {
 	// tinymce plugin
-	require_once 'tinymce_shoppydoo_tagcreator.class.php';
+	require_once 'tinymce_earnfromsd_tagcreator.class.php';
 	add_action( 'wp_ajax_earnfromsd_product_categories_action', 'earnfromsd_list_categories_cb' );
 	add_action( 'wp_ajax_shoppydoo_tag_window_tmpl_action', 'shoppydoowp_tag_window_tmpl' );
 }
